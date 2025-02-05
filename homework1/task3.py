@@ -15,7 +15,6 @@ def pos_neg_zero(num):
   else:
     return "Zero"
 
-
 #print the first 10 prime numbers
 def first_ten_primes():
   primes = []
@@ -31,14 +30,12 @@ def first_ten_primes():
     num += 1
   return str(primes)
 
-
 #sum of all numbers from 1 to 100
 def sum_of_numbers():
   sum = 0
   for i in range(1, 101):
     sum += i
   return str(sum)
-
 
 #test pos_neg_zero
 conditional1 = pos_neg_zero(5)
@@ -51,4 +48,5 @@ primes = first_ten_primes()
 #test sum_of_numbers
 sum = sum_of_numbers()
 
+#send all results to stdout:
 print(conditional1 + conditional2 + conditional3 + primes + sum)

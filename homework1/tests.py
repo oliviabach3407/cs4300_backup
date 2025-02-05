@@ -6,11 +6,27 @@ import pytest
 import numpy as np
 import json
 
+'''
+import for specific function tests that are
+semi-independent of total script success/failure:
+'''
+from task2 import get_type, name, age, height, is_student
 from task3 import pos_neg_zero, first_ten_primes, sum_of_numbers
 from task4 import calculate_discount
 from task5 import favorite_books, student_database
 from task6 import count_words_in_file
 from task7 import random_calculator
+
+'''
+all of my tests follow the same general format:
+-setup (where the stdoutput of the task is captured)
+-teardown
+-test output (testing the full string of the output/file that was printed/written to at the end of the script)
+          ^^ this is a test of all functions and all datatypes in the task (testing the stdout of the script)
+-test exit code (testing that the script was run without error)
+-test specific functions within script (beyond what was tested by test_output)
+          OR test structure of variables that were in the script (things that wouldn't have output to stdout)
+'''
 
 ###############
 # Start Tests #
@@ -31,7 +47,7 @@ class TestTask1:
         assert self.result.stdout.strip() == "Hello, Replit!"
 
     def test_exit_code(self):
-        '''making sure task1.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
 
     def test_no_extra_output(self):
@@ -54,29 +70,24 @@ class TestTask2:
         assert self.result.stdout.strip() == expected_output
 
     def test_exit_code(self):
-        '''making sure task2.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
 
     def test_integer_type(self):
         '''testing that age is an integer'''
-        assert "Age: 25" in self.result.stdout
-        assert isinstance(25, int)
+        assert get_type(age) == "<class 'int'>"
 
     def test_float_type(self):
         '''testing that height is a float'''
-        assert "Height: 1.75" in self.result.stdout
-        assert isinstance(1.75, float)
+        assert get_type(height) == "<class 'float'>"
 
     def test_string_type(self):
         '''testing that name is a string'''
-        assert "Name: John" in self.result.stdout
-        assert isinstance("John", str)
+        assert get_type(name) == "<class 'str'>"
 
     def test_boolean_type(self):
         '''testing that is_student is a boolean'''
-        assert "Is Student: True" in self.result.stdout
-        assert isinstance(True, bool)
-
+        assert get_type(is_student) == "<class 'bool'>"
 
 #Task 3: Control Structures
 class TestTask3:
@@ -94,13 +105,13 @@ class TestTask3:
         assert self.result.stdout.strip() == expected_output
 
     def test_exit_code(self):
-        '''making sure task3.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
 
     def test_pos_neg_zero(self):
         '''pos_neg_zero() test'''
         assert pos_neg_zero(10) == "Positive"
-        assert pos_neg_zero(-5) == "Negative"
+        assert pos_neg_zero(-2) == "Negative"
         assert pos_neg_zero(0) == "Zero"
 
     def test_first_ten_primes(self):
@@ -128,7 +139,7 @@ class TestTask4:
         assert self.result.stdout.strip() == expected_output
 
     def test_exit_code(self):
-        '''making sure task4.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
 
     def test_integer_discount(self):
@@ -158,7 +169,7 @@ class TestTask4:
 
     def test_negative_values(self):
         '''testing calculate_discount() with negative values'''
-        assert calculate_discount(100, -10) == 110.0  # Negative discount increases price
+        assert calculate_discount(100, -10) == 110.0
         assert calculate_discount(50.5, -5) == 53.03
 
 #Task 5: Lists and Dictionaries
@@ -177,7 +188,7 @@ class TestTask5:
         assert self.result.stdout.strip() == expected_output
 
     def test_exit_code(self):
-        '''making sure task5.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
 
     def test_list_slicing(self):
@@ -211,7 +222,7 @@ class TestTask6:
         assert self.result.stdout.strip() == expected_output
     
     def test_exit_code(self):
-        '''making sure task6.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
     
     #https://www.packetcoders.io/dynamically-generating-tests-with-pytest-parametrization/
@@ -231,6 +242,7 @@ class TestTask7:
         #run the script to create the file for reading
         self.result = subprocess.run(['python', 'task7.py'], capture_output=True, text=True)
         with open("task7_output.json", "r") as f:
+            #to get the list of numbers in the correct format
             self.list_of_numbers = json.load(f)
 
     def teardown_class(self):
@@ -244,19 +256,18 @@ class TestTask7:
         assert std_dev > 0, "Standard deviation should be greater than 0"
     
     def test_exit_code(self):
-        '''making sure task7.py was successfully run'''
+        '''testing exit code for success'''
         assert self.result.returncode == 0
     
     #https://www.packetcoders.io/dynamically-generating-tests-with-pytest-parametrization/
-    #if you choose a small number, 
-    #like 10 for the num_iterations,
-    #this test will fail
+    #if you choose a small number like 10 for the num_iterations, this test will fail
+    #because there aren't enough numbers to cause the right mean and standard deviation
     @pytest.mark.parametrize("name,num_iterations", [
         ("RandomTest0-", 1000000),
         ("RandomTest0-", 100),
         ("RandomTest0-", 1000)
     ])
-    def test_word_count(self, name, num_iterations):
+    def test_if_list_of_numbers_is_random(self, name, num_iterations):
         '''testing randomness within different amounts of iterations'''
         result = random_calculator(num_iterations)
         mean_value = np.mean(result)

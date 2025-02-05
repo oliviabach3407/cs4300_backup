@@ -7,6 +7,8 @@ to verify the correctness of your code when using the package.
 import numpy as np
 import json
 
+#takes a number of iterations and creates that many random numbers
+#returns these numbers as a list
 def random_calculator(num_iterations):
     all_random_numbers = []
     for _ in range(num_iterations):
@@ -15,6 +17,7 @@ def random_calculator(num_iterations):
         
     return all_random_numbers
 
+#general test with 10000 random numbers
 result = random_calculator(10000)
 
 #write output to a file so it can be checked easier by the test
