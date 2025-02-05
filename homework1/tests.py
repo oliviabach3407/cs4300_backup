@@ -6,6 +6,8 @@ import pytest
 
 from task3 import pos_neg_zero, first_ten_primes, sum_of_numbers
 from task4 import calculate_discount
+from task5 import favorite_books, student_database
+from task6 import count_words_in_file
 
 ###############
 # Start Tests #
@@ -158,21 +160,64 @@ class TestTask4:
         assert calculate_discount(50.5, -5) == 53.03
 
 #Task 5: Lists and Dictionaries
-def test_task5():
-  result = subprocess.run(['python', 'task5.py'],
-                          capture_output=True,
-                          text=True)
+class TestTask5:
+    def setup_method(self):
+        print("\nSetting up test for task5.py...")
+        #store result as an instance variable of the class
+        self.result = subprocess.run(['python', 'task5.py'], capture_output=True, text=True)
 
-  holder = [
-      "1984 - George Orwell", "To Kill a Mockingbird - Harper Lee",
-      "The Lord of The Rings - J.R.R. Tolkien"
-  ]
-  assert result.stdout.strip('\n') == f"{holder}\n12345"
+    def teardown_method(self):
+        print("Cleaning up test for task5.py...")
 
+    def test_script_output(self):
+        '''testing total expected output'''
+        expected_output = "['1984 - George Orwell', 'To Kill a Mockingbird - Harper Lee', 'The Lord of The Rings - J.R.R. Tolkien']\n12345"
+        assert self.result.stdout.strip() == expected_output
+
+    def test_exit_code(self):
+        '''making sure task5.py was successfully run'''
+        assert self.result.returncode == 0
+
+    def test_list_slicing(self):
+        '''testing list slicing for first three books'''
+        assert favorite_books[:3] == [
+            "1984 - George Orwell",
+            "To Kill a Mockingbird - Harper Lee",
+            "The Lord of The Rings - J.R.R. Tolkien",
+        ]
+
+    def test_student_database(self):
+        '''testing student database dictionary'''
+        assert student_database["John"] == "12345"
+        assert student_database["Jane"] == "67890"
+        assert student_database["Bob"] == "54321"
+        assert student_database["Alice"] == "98765"
 
 #Task 6: File Handling and Metaprogramming
-def test_task6():
-  result = subprocess.run(['python', 'task6.py'],
-                          capture_output=True,
-                          text=True)
-  assert result.stdout.strip('\n') == "12"
+class TestTask6:
+    def setup_class(self):
+        print("\nSetting up test for task6.py...")
+        #store result as an instance variable of the class
+        self.result = subprocess.run(['python', 'task6.py'], capture_output=True, text=True)
+    
+    def teardown_class(cls):
+        print("Cleaning up test for task6.py...")
+    
+    def test_script_output(self):
+        '''testing total expected output'''
+        expected_output = str(104)
+        assert self.result.stdout.strip() == expected_output
+    
+    def test_exit_code(self):
+        '''making sure task6.py was successfully run'''
+        assert self.result.returncode == 0
+    
+    #https://www.packetcoders.io/dynamically-generating-tests-with-pytest-parametrization/
+    @pytest.mark.parametrize("filename,expected_count", [
+        ("task6_read_me.txt", 104),
+        ("task6_other.txt", 14),
+        ("task6_empty.txt", 0)
+    ])
+    def test_word_count(self, filename, expected_count):
+        '''testing word count in each file'''
+        assert count_words_in_file(filename) == expected_count

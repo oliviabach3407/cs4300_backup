@@ -4,7 +4,6 @@ Implement metaprogramming techniques to dynamically generate function names for 
 Include pytest test cases that verify the word count for each text file.
 '''
 
-
 def count_words_in_file(filename):
   with open(filename, 'r') as file:
     text = file.read()
@@ -12,4 +11,4 @@ def count_words_in_file(filename):
     return len(words)
 
 
-print(count_words_in_file("task6.txt"))
+print(count_words_in_file("task6_read_me.txt"))
