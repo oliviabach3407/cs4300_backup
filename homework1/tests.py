@@ -3,16 +3,18 @@ import os
 from os import system
 import subprocess
 import pytest
+import numpy as np
+import json
 
 from task3 import pos_neg_zero, first_ten_primes, sum_of_numbers
 from task4 import calculate_discount
 from task5 import favorite_books, student_database
 from task6 import count_words_in_file
+from task7 import random_calculator
 
 ###############
 # Start Tests #
 ###############
-
 
 #Task 1: Introduction to Replit
 class TestTask1:
@@ -221,3 +223,44 @@ class TestTask6:
     def test_word_count(self, filename, expected_count):
         '''testing word count in each file'''
         assert count_words_in_file(filename) == expected_count
+
+#Task 7: Package Control in DevEdu
+class TestTask7:
+    def setup_class(self):
+        print("\nSetting up test for task7.py...")
+        #run the script to create the file for reading
+        self.result = subprocess.run(['python', 'task7.py'], capture_output=True, text=True)
+        with open("task7_output.json", "r") as f:
+            self.list_of_numbers = json.load(f)
+
+    def teardown_class(self):
+        print("Cleaning up test for task7.py...")
+    
+    def test_script_output(self):
+        '''testing total expected output'''
+        mean_value = np.mean(self.list_of_numbers)
+        std_dev = np.std(self.list_of_numbers)
+        assert 0.45 < mean_value < 0.55, "Mean value is out of expected bounds"
+        assert std_dev > 0, "Standard deviation should be greater than 0"
+    
+    def test_exit_code(self):
+        '''making sure task7.py was successfully run'''
+        assert self.result.returncode == 0
+    
+    #https://www.packetcoders.io/dynamically-generating-tests-with-pytest-parametrization/
+    #if you choose a small number, 
+    #like 10 for the num_iterations,
+    #this test will fail
+    @pytest.mark.parametrize("name,num_iterations", [
+        ("RandomTest0-", 1000000),
+        ("RandomTest0-", 100),
+        ("RandomTest0-", 1000)
+    ])
+    def test_word_count(self, name, num_iterations):
+        '''testing randomness within different amounts of iterations'''
+        result = random_calculator(num_iterations)
+        mean_value = np.mean(result)
+        std_dev = np.std(result)
+        assert 0.45 < mean_value < 0.55, "Mean value is out of expected bounds"
+        assert std_dev > 0, "Standard deviation should be greater than 0"
+
