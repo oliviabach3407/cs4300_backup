@@ -6,7 +6,7 @@ Write pytest test cases to test the calculate_discount function with various typ
 
 
 def calculate_discount(price, discount):
-  return price * (1 - discount / 100)
+  return round(price * (1 - discount / 100), 2)
 
 
 calc1 = calculate_discount(10, 20)
