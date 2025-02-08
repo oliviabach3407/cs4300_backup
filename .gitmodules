@@ -1,0 +1,3 @@
+[submodule "homework2/movie_theater_booking/obach2"]
+	path = homework2/movie_theater_booking/obach2
+	url = https://github.com/UCCS-CS4300-5300/obach2.git
