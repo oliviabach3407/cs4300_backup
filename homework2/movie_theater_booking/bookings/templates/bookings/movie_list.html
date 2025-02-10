@@ -1,27 +1,15 @@
-{% extends 'bookings/base.html' %}
-
-{% block title %}Movie List{% endblock %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<h2>Available Movies</h2>
-
-<ul class="list-group">
-
-    {% for movie in movies- see example in class slides %}
-
-        <li class="list-group-item">
-
-            <h5>{{ movie.title }}</h5>
-
-            <p>{{ movie.description }}</p>
-
-            <a href="{% url 'book_seat' movie.id %}" class="btn btn-primary">Book Now</a>
-
-        </li>
-
-    {% endfor %}
-
-</ul>
-
+<div class="container">
+    <h1>Available Movies</h1>
+    <ul class="list-group">
+        {% for movie in movies %}
+            <li class="list-group-item">
+                <strong>{{ movie.title }}</strong> ({{movie.duration}} min): {{ movie.description }} 
+                {% comment %} when the user clicks 'Book Now' they are redirected to a seat booking page for the movie they chose {% endcomment %}
+                <a href="{% url 'seat_booking' movie.id %}" class="btn btn-primary btn-sm float-end">Book Now</a> 
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

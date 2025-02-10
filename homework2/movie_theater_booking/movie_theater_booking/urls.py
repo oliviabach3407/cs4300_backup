@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("bookings/", include("bookings.urls")), #linking the booking app's urls to the overall project's urls
+    path("", include("bookings.urls")), #linking the booking app's urls to the overall project's urls
     path("admin/", admin.site.urls),
 ]
