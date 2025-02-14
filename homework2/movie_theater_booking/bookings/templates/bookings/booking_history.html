@@ -1,13 +1,21 @@
 {% extends "base.html" %}
+
 {% block content %}
-<div class="container">
-    <h1>Your Booking History</h1>
-    <ul class="list-group">
+<h2>Your Booking History</h2>
+
+{% if bookings %}
+    <ul>
         {% for booking in bookings %}
-            <li class="list-group-item">
-                Movie: {{ booking.movie.title }} | Seat: {{ booking.seat.seat_number }} | Booked on: {{ booking.booking_date }}
+            <li>
+                <strong>{{ booking.movie.title }}</strong> - 
+                Seat {{ booking.seat.seat_number }} - 
+                Reserved for {{ booking.booking_date|date:"F j, Y" }}
             </li>
         {% endfor %}
     </ul>
-</div>
+{% else %}
+    <p>No bookings found.</p>
+{% endif %}
+
+<a href="{% url 'movies' %}">Back to Movies</a>
 {% endblock %}

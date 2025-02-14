@@ -2,10 +2,15 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.template.response import TemplateResponse
 from django.http import HttpResponse
+from django.utils.dateparse import parse_date #helps with user input
+
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Movie, Seat, Bookings, User
 from .serializers import MovieSerializer, SeatSerializer, BookingSerializer, UserSerializer
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
 
 ############
 # Viewsets #
@@ -69,28 +74,52 @@ def view_movies(request):
 
     return TemplateResponse(request, 'movie_list.html', {"movies": movies})
 
+@login_required
 def book_seat(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    users = User.objects.all()
-    seats = Seat.objects.filter(is_booked=False)
+    available_seats = Seat.objects.filter(movie=movie, is_booked=False)
 
-    if request.method == "GET":
-        return render(request, 'seat_booking.html', {'movie': movie, 'seats': seats, 'users': users})
-    
-    if request.method == 'POST':
-        seat_number = request.Post.get('seat_number')
-        seat = get_object_or_404(Seat, seat_number=seat_number)
-        user_name = request.POST.get('user_name')
-        user = get_object_or_404(User, name=user_name)
+    if request.method == "POST":
+        seat_id = request.POST.get('seat_id')
+        booking_date = request.POST.get('booking_date')  # Get selected date
+        seat = get_object_or_404(Seat, id=seat_id, is_booked=False)
 
-        Bookings.objects.create(movie=movie, seat=seat, user=user)
+        # Ensure the date is valid
+        if not booking_date:
+            return render(request, 'seat_booking.html', {'movie': movie, 'seats': available_seats, 'error': 'Invalid date selected!'})
 
+        # Check if the seat is already booked for this date
+        if Bookings.objects.filter(seat=seat, booking_date=booking_date).exists():
+            return render(request, 'seat_booking.html', {'movie': movie, 'seats': available_seats, 'error': 'Seat already booked for this date!'})
+
+        # Create the booking
+        Bookings.objects.create(movie=movie, seat=seat, user=request.user, booking_date=booking_date)
+
+        # Mark seat as booked
         seat.is_booked = True
         seat.save()
 
         return redirect('booking_history')
-    
-def booking_history(request, user_id):
-    bookings = Bookings.objects.all()
 
+    return render(request, 'seat_booking.html', {'movie': movie, 'seats': available_seats})
+    
+@login_required
+def booking_history(request):
+    bookings = Bookings.objects.filter(user=request.user)  # Filter by logged-in user
     return render(request, 'booking_history.html', {"bookings": bookings})
+
+########################
+# Authentication Views #
+########################
+
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in after signup
+            return redirect('movies')  
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'signup.html', {'form': form})

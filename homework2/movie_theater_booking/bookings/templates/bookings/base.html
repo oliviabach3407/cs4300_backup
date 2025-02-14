@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     
     {% block extra_head %}{% endblock %}
 </head>
@@ -25,7 +25,20 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'movies' %}">Movies</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'booking_history' %}">Booking History</a></li>
-                </ul> 
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="navbar-text text-light">Welcome, {{ user.username }}!</span>
+                        </li>
+                        <li class="nav-item">
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning btn-sm">Logout</button>
+                            </form>     
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </nav>    
