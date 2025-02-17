@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import MovieViewSet, SeatViewSet, BookingViewSet, UserViewSet, view_movies, book_seat, booking_history, signup
+from .views import MovieViewSet, SeatViewSet, BookingViewSet, view_movies, book_seat, booking_history, signup
 
 #for login/signup
 from django.contrib.auth import views as auth_views
@@ -11,7 +11,7 @@ router = DefaultRouter()
 router.register(r'movies', MovieViewSet)
 router.register(r'seats', SeatViewSet)
 router.register(r'bookings', BookingViewSet)
-router.register(r'users', UserViewSet)
+# router.register(r'users', UserViewSet) --> this shows too much information
 
 urlpatterns = [
     path('api/', include(router.urls)),  #API Endpoints

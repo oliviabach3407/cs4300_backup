@@ -1,12 +1,10 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.template.response import TemplateResponse
-from django.http import HttpResponse
-from django.utils.dateparse import parse_date #helps with user input
 
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Movie, Seat, Bookings, User
-from .serializers import MovieSerializer, SeatSerializer, BookingSerializer, UserSerializer
+from .models import Movie, Seat, Bookings
+from .serializers import MovieSerializer, SeatSerializer, BookingSerializer
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -15,9 +13,6 @@ from django.contrib.auth.forms import UserCreationForm
 ############
 # Viewsets #
 ############
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 class MovieViewSet(viewsets.ModelViewSet):
     """ Provides CRUD operations for movies. """
@@ -77,7 +72,7 @@ def view_movies(request):
 @login_required
 def book_seat(request, movie_id):
     movie = get_object_or_404(Movie, pk=movie_id)
-    available_seats = Seat.objects.filter(movie=movie, is_booked=False)
+    available_seats = Seat.objects.filter(is_booked=False)
 
     if request.method == "POST":
         seat_id = request.POST.get('seat_id')

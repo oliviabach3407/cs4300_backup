@@ -17,5 +17,15 @@ class Bookings(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     booking_date = models.DateField(blank=True, null=True)
 
+    #automatically mark seat as booked when a new booking is created - for testing
+    #overriding save()
+    def save(self, *args, **kwargs):
+        #save booking with the super class's save()
+        super().save(*args, **kwargs)
+        #set the seat's is_booked to true
+        self.seat.is_booked = True
+        #save that to the database
+        self.seat.save()
+
     def __str__(self):
         return f"{self.user.username} - {self.movie.title} - Seat {self.seat.seat_number}"
