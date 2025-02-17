@@ -71,28 +71,21 @@ def view_movies(request):
 
 @login_required
 def book_seat(request, movie_id):
-    movie = get_object_or_404(Movie, pk=movie_id)
+    movie = get_object_or_404(Movie, id=movie_id)
     available_seats = Seat.objects.filter(is_booked=False)
 
     if request.method == "POST":
         seat_id = request.POST.get('seat_id')
         booking_date = request.POST.get('booking_date')  # Get selected date
-        seat = get_object_or_404(Seat, id=seat_id, is_booked=False)
+        seat = get_object_or_404(Seat, id=seat_id)
 
-        # Ensure the date is valid
-        if not booking_date:
-            return render(request, 'seat_booking.html', {'movie': movie, 'seats': available_seats, 'error': 'Invalid date selected!'})
+        if not seat.is_booked:
+            #create the booking
+            Bookings.objects.create(movie=movie, seat=seat, user=request.user, booking_date=booking_date)
 
-        # Check if the seat is already booked for this date
-        if Bookings.objects.filter(seat=seat, booking_date=booking_date).exists():
-            return render(request, 'seat_booking.html', {'movie': movie, 'seats': available_seats, 'error': 'Seat already booked for this date!'})
-
-        # Create the booking
-        Bookings.objects.create(movie=movie, seat=seat, user=request.user, booking_date=booking_date)
-
-        # Mark seat as booked
-        seat.is_booked = True
-        seat.save()
+            #mark seat as booked
+            seat.is_booked = True
+            seat.save()
 
         return redirect('booking_history')
 
