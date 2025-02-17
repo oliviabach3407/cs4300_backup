@@ -11,8 +11,12 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
-    {% block extra_head %}{% endblock %}
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Joti+One&display=swap" rel="stylesheet">
+        
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -26,9 +30,6 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'movies' %}">Movies</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'booking_history' %}">Booking History</a></li>
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <span class="navbar-text text-light">Welcome, {{ user.username }}!</span>
-                        </li>
                         <li class="nav-item">
                             <form action="{% url 'logout' %}" method="post" class="d-inline">
                                 {% csrf_token %}

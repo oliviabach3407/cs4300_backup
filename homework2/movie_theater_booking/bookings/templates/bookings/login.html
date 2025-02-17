@@ -7,6 +7,17 @@
         <h2 class="text-center text-warning">Login</h2>
         <form method="post">
             {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <div class="mb-3">
                 <label for="username" class="form-label">Username:</label>
                 <input type="text" name="username" id="username" class="form-control">
