@@ -39,7 +39,8 @@ And there is a static folder that holds the styles.css sheet for the entire app.
 
 * Open the terminal and 'cd' to \cs4300\obach2\homework2\movie_theater_booking
 * run: ```source myenv/bin/activate```
-* run ```python3 manage.py runserver```
+* run ```python manage.py runserver 0.0.0.0:3000```
+* Click the 'App' button on the container page
 
 ### On My Local Machine:
 
@@ -55,7 +56,7 @@ These are the instructions that **I** use locally:
 
 ### How to Run the Tests:
 
-After having followed the instructions above to activate the virtual machine:
+After having followed the relevant instructions above to activate the virtual machine:
 
 * run: ```python manage.py test``` --> there are 17 tests that should run
 
