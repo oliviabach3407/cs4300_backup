@@ -35,6 +35,12 @@ And there is a static folder that holds the styles.css sheet for the entire app.
 * djangorestframework 
 * coverage
 
+### On DevEdu - INSTRUCTIONS FOR RUNNING ON DEVEDU
+
+* Open the terminal and 'cd' to \cs4300\obach2\homework2\movie_theater_booking
+* run: ```source myenv/bin/activate```
+* run ```python3 manage.py runserver```
+
 ### On My Local Machine:
 
 **Disclaimer** - this doesn't work on your local machine because the path to my 
