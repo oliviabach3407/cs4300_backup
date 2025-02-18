@@ -28,6 +28,13 @@ And there is a static folder that holds the styles.css sheet for the entire app.
 * Python on my computer (the path)
 * Python3
 
+### Packages Installed With Pip
+
+* virtualenv
+* django-bootstrap5
+* djangorestframework 
+* coverage
+
 ### On My Local Machine:
 
 **Disclaimer** - this doesn't work on your local machine because the path to my 
