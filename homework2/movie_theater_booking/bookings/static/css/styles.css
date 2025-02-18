@@ -9,7 +9,7 @@ body {
 .navbar-brand {
     margin: 20px 0;
     text-align: center;
-    color: #ffcc00; /* Yellow accent */
+    color: #ff3dd2; /* Yellow accent */
     font-size: 30px;
     /* font-family: "Bangers", serif; */
 }
@@ -22,7 +22,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     margin: 20px 0;
     text-align: center;
-    color: #ffcc00; /* Yellow accent */
+    color: #ff3dd2; /* Yellow accent */
     /* font-family: "Joti One", serif; */
 }
 
@@ -42,7 +42,7 @@ p {
 /* Button Styling */
 button,
 .btn {
-    background-color: #ffcc00;
+    background-color: #ff3dd2;
     color: #000;
     border: none;
     padding: 10px 20px;

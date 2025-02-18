@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-1w&am&$n%j91&qcq#=#yfpje2jbep2rtjd@pdmzi7%e$#6wl$-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['editor-niftydriscoll-18.devedu.io','app-niftydriscoll-18.devedu.io',]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://app-niftydriscoll-18.devedu.io',  
+]
 
 from django.urls import reverse_lazy
 
