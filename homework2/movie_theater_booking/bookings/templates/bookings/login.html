@@ -4,7 +4,7 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%; background-color: #222; color: white;">
         <h5>You must login before you can book a ticket or view your booking history</h5>
-        <h2 class="text-center text-warning">Login</h2>
+        <h2>Login</h2>
         <form method="post">
             {% csrf_token %}
             {% if form.errors %}

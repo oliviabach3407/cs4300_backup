@@ -63,6 +63,12 @@ class ModelTests(TestCase):
         self.assertTrue(self.seat.is_booked)
 
 class APITests(TestCase):
+    '''
+    Use APIClient to make requests:
+    Instantiate APIClient in your test methods or setUp method.
+    Use methods like client.get(), client.post(), client.put(), client.delete() to simulate HTTP requests.
+    Pass data as needed for POST, PUT, and PATCH requests.
+    '''
     #create an API client, user, movie, and seat
     def setUp(self):
         self.client = APIClient()
