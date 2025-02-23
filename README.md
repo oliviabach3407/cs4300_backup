@@ -42,6 +42,20 @@ And there is a static folder that holds the styles.css sheet for the entire app.
 * run ```python manage.py runserver 0.0.0.0:3000```
 * Click the 'App' button on the container page
 
+### Using the API for CRUD Operations:
+* CREATE - go to https://app-niftydriscoll-18.devedu.io/api/movies/ and fill in the form
+* READ curl -X GET https://app-niftydriscoll-18.devedu.io/api/movies/
+* UPDATE curl -X PUT https://app-niftydriscoll-18.devedu.io/api/seats/1/ \
+     -H "Content-Type: application/json" \
+     -d '{
+         "title": "Updated Movie",
+         "description": "Updated description",
+         "release_date": "2025-02-22",
+         "duration": 120
+     }'
+
+* DELETE curl -X DELETE https://app-niftydriscoll-18.devedu.io/api/seats/1/
+
 ### On My Local Machine:
 
 **Disclaimer** - this doesn't work on your local machine because the path to my 
